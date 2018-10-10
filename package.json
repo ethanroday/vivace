@@ -1,0 +1,9 @@
+{
+  "name": "vivace",
+  "version": "0.0.1",
+  "description": "A modern Javascript music notation rendering engine.",
+  "main": "index.js",
+  "repository": "https://github.com/ethanroday/vivace",
+  "author": "Ethan Roday",
+  "license": "MIT"
+}
