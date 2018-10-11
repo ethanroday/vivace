@@ -1,35 +1,31 @@
+import { makeTestCaseFactory } from '../../../test/util';
 import { getNoteheadOffsets } from "./chord";
 import { StemDirection } from "../../models";
 
 describe("getNoteheadOffsets", () => {
-  describe("one notehead", () => {
-    it("should point right if the stem points down", () => {
-      const res = getNoteheadOffsets([3], StemDirection.DOWN);
-      expect(res).toEqual([0]);
-    });
-    it("should point left if the stem points up", () => {
-      const res = getNoteheadOffsets([-3], StemDirection.UP);
-      expect(res).toEqual([-1]);
-    });
-  });
-  describe("a second", () => {
-    it("should offset the lower pitch if the stem points down", () => {
-      const res = getNoteheadOffsets([3, 3.5], StemDirection.DOWN);
-      expect(res).toEqual([-1, 0]);
-    });
-    it("should offset the lower pitch if the stem points up", () => {
-      const res = getNoteheadOffsets([-3.5, -3], StemDirection.UP);
-      expect(res).toEqual([-1, 0]);
-    });
-  });
-  describe("a third", () => {
-    it("should point right if the stem points down", () => {
-      const res = getNoteheadOffsets([3, 4], StemDirection.DOWN);
-      expect(res).toEqual([0, 0]);
-    });
-    it("should point left if the stem points up", () => {
-      const res = getNoteheadOffsets([-4, -3], StemDirection.UP);
-      expect(res).toEqual([-1, -1]);
-    });
-  });
+  
+  const { factory, runAll } = makeTestCaseFactory(
+    getNoteheadOffsets,
+    ({ args, expected }) => `${args[0]} with stem direction ${args[1]} expects ${expected}`
+  );
+
+  describe("one notehead", () => runAll(
+    factory([0], [3], StemDirection.DOWN),
+    factory([-1], [-3], StemDirection.UP)
+  ));
+
+  describe("seconds", () => runAll(
+    factory([-1, 0], [3, 3.5], StemDirection.DOWN),
+    factory([-1, 0], [-3.5, -3], StemDirection.UP)
+  ));
+
+  describe("thirds", () => runAll(
+    factory([0, 0], [3, 4], StemDirection.DOWN),
+    factory([-1, -1], [-4, -3], StemDirection.UP)
+  ));
+
+  describe("three-note clusters", () => runAll(
+    factory([0, -1, 0], [3, 3.5, 4], StemDirection.DOWN),
+    factory([-1, 0, -1], [-4, -3.5, -3], StemDirection.UP),
+  ));
 });

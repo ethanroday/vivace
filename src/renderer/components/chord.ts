@@ -17,7 +17,7 @@ export const getNoteheadOffsets = (staffPositions: StaffPosition[], stemDirectio
   const dir = end < start ? -1 : 1;
   let left = (end - start + dir) * dir;
   let i = start;
-  const offsets = new Array(staffPositions.length);
+  const offsets = new Array<number>(staffPositions.length);
   while (left > 1) {
     offsets[i] = preferred;
     if (isHalfStaffSpace(staffPositions[i], staffPositions[i + dir])) {
